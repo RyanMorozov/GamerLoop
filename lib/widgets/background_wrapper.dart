@@ -4,35 +4,83 @@ import 'package:gamerloop/constants/app_colors.dart';
 
 class BackgroundWrapper extends StatelessWidget {
   final Widget child;
-  final String? imageUrl; // İleride CMS'den URL buraya gelecek
+  final String? imageAssetPath;
+  final bool showAmbientGlow;
+  final double overlayOpacity;
 
   const BackgroundWrapper({
     super.key,
     required this.child,
-    this.imageUrl,
+    this.imageAssetPath,
+    this.showAmbientGlow = true,
+    this.overlayOpacity = 0.22,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        image: DecorationImage(
-          // EĞER imageUrl null ise asset resmini kullan, yoksa network image kullan
-          image: imageUrl == null
-              ? const AssetImage('assets/images/gamer_bg.jpg') as ImageProvider
-              : NetworkImage(imageUrl!),
-          fit: BoxFit.cover, // Resmi ekrana kapla
-          // Arkaplanı biraz karartalım ki yazı net okunsun
-          colorFilter: ColorFilter.mode(
-            Colors.black.withOpacity(0.6),
-            BlendMode.darken,
-          ),
-        ),
+    return SizedBox.expand(
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          if (imageAssetPath == null)
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF07090F),
+                    Color(0xFF0D111A),
+                    Color(0xFF090B12),
+                  ],
+                ),
+              ),
+            )
+          else
+            Image.asset(
+              imageAssetPath!,
+              fit: BoxFit.cover,
+            ),
+          if (showAmbientGlow)
+            Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                width: 280,
+                height: 280,
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    center: Alignment.center,
+                    radius: 0.9,
+                    colors: [
+                      AppColors.accent.withOpacity(0.22),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          if (showAmbientGlow)
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Container(
+                width: 340,
+                height: 340,
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    center: Alignment.center,
+                    radius: 1.0,
+                    colors: [
+                      Colors.blueAccent.withOpacity(0.14),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          Container(color: Colors.black.withOpacity(overlayOpacity)),
+          SafeArea(child: child), // Çentiklere çarpmaması için SafeArea
+        ],
       ),
-      child: SafeArea(child: child), // Çentiklere çarpmaması için SafeArea
     );
   }
 }

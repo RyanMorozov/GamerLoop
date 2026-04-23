@@ -1,16 +1,23 @@
-# gamerloop
+# GamerLoop
 
-A new Gamer Application
+Flutter tabanlı bir oyuncu uygulaması başlangıç projesi.
 
-## Getting Started
+## Mevcut Akış
 
-This project is a starting point for a Flutter application.
+- `WelcomeScreen` açılır, kısa bir splash deneyimi sunar.
+- 3 saniye sonra otomatik olarak `LoginScreen` ekranına yönlendirir.
+- Arka plan bileşeni hem asset hem de opsiyonel ağ görseli destekler.
 
-A few resources to get you started if this is your first Flutter project:
+## Kurulum
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```bash
+flutter pub get
+flutter run
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Test ve Analiz
+
+```bash
+flutter analyze
+flutter test
+```
